@@ -50,7 +50,13 @@ class Chat extends SlackMethod implements SlackChat
      */
     public function message($channel, $text, $options = [])
     {
-        return $this->method('postMessage', array_merge(compact('channel', 'text'), ['as_user' => !isset($options['username'])], $options));
+        if(is_array($text)){
+            $block = json_encode($text);
+            $body = compact('channel', 'block');
+        } else {
+            $body = compact('channel', 'text');
+        }
+        return $this->method('postMessage', array_merge($body, ['as_user' => !isset($options['username'])], $options));
     }
 
     /**
