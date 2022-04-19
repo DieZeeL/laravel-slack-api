@@ -236,11 +236,18 @@ class SlackApi implements Contract
         $options = [
             'query' => [
                 't' => time()
-            ],
-            'headers' => [
-                'Authorization' => "Bearer {$this->getToken()}"
             ]
         ];
+
+        /**
+         * @author DieZ
+         * Fix for exclude token from headers when need.
+         */
+        if(isset($parameters['without_token'])){
+            unset($parameters['without_token']);
+        } else {
+            $options['headers']['Authorization'] = "Bearer {$this->getToken()}";
+        }
 
         if (isset($parameters['attachments']) && is_array($parameters['attachments'])) {
             $parameters['attachments'] = json_encode($parameters['attachments']);
