@@ -253,7 +253,12 @@ class SlackApi implements Contract
             $parameters['attachments'] = json_encode($parameters['attachments']);
         }
 
-        $options['form_params'] = $parameters;
+        if (isset($parameters['multipart']) && is_array($parameters['multipart'])) {
+            $options['headers']['Content-Type'] = 'multipart/form-data';
+            $options['multipart'] = $parameters['multipart'];
+        } else {
+            $options['form_params'] = $parameters;
+        }
 
         return $options;
     }

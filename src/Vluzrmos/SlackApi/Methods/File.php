@@ -82,6 +82,24 @@ class File extends SlackMethod implements SlackFile
      */
     public function upload($options = [])
     {
-        return $this->method('upload', $options);
+        if(isset($options['file'])){
+            $request['multipart'][] = [
+                'name' => 'file',
+                'contents' => $options['file'],
+                'filename' => $options['filename'],
+            ];
+            foreach($options as $key => $option){
+                if(in_array($key, ['file','filename'])){
+                    continue;
+                }
+                $request['multipart'][] = [
+                    'name' => $key,
+                    'contents' => $option,
+                ];
+            }
+        } else {
+            $request = $options;
+        }
+        return $this->method('upload', $request);
     }
 }
