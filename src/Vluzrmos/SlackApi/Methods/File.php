@@ -87,6 +87,9 @@ class File extends SlackMethod implements SlackFile
                 'name' => 'file',
                 'contents' => $options['file'],
                 'filename' => $options['filename'],
+                'headers' => [
+                    'Content-Type' => 'multipart/form-data'
+                ]
             ];
             foreach($options as $key => $option){
                 if(in_array($key, ['file','filename'])){

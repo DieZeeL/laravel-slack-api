@@ -233,12 +233,6 @@ class SlackApi implements Contract
      */
     protected function mergeParameters($parameters = [])
     {
-        $options = [
-            'query' => [
-                't' => time()
-            ]
-        ];
-
         /**
          * @author DieZ
          * Fix for exclude token from headers when need.
@@ -254,10 +248,12 @@ class SlackApi implements Contract
         }
 
         if (isset($parameters['multipart']) && is_array($parameters['multipart'])) {
-            $options['headers']['Content-Type'] = 'multipart/form-data';
             $options['multipart'] = $parameters['multipart'];
         } else {
             $options['form_params'] = $parameters;
+            $options['query'] = [
+                't' => time()
+            ];
         }
 
         return $options;
